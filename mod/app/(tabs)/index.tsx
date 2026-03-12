@@ -7,7 +7,7 @@ GoogleSignin.configure({
 })
 
 export default function HomeScreen() {
-  const[auth, setAuth] = useState<User | null>(null)
+  const[auth, setAuth] = useState<User|null>(null)
 
   async function handleGoogleSignIn(){
     try {
