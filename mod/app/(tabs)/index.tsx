@@ -24,8 +24,18 @@ export default function HomeScreen() {
 
   return (
       <View style={styles.container}>
-          <Button title="Entrar" onPress={handleGoogleSignIn} />
-
+        <Text style={styles.textoBase}>
+          Bem vindo ao Modulargement
+        </Text>
+          <Button 
+          title="Entrar com google" 
+          color="#f194ff"
+          onPress={handleGoogleSignIn} 
+          />
+          <Button title="Cadastrar"
+          color="#841584"
+          />
+          <Button title="Login"/>
           {auth && (
             <View style={styles.container}>
               <Text>{auth.user.name}</Text>
@@ -40,8 +50,18 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       opacity: 1,
+      backgroundColor: '#f0f0f0',
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    textoBase:{
+      fontSize:24,
+      color: '#666',
+      fontWeight: 'bold'
+    },
+    botoes:{
+      fontSize: 15,
+      color: 'black'
     },
     photo: {
       width: 100,
