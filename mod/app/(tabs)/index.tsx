@@ -28,12 +28,12 @@ export default function HomeScreen() {
           Bem vindo ao Modulargement
         </Text>
           <Button 
-          title="Entrar com google" 
-          color="#f194ff"
+          title="Entrar com google"
           onPress={handleGoogleSignIn} 
           />
-          <Button title="Cadastrar"
-          color="#841584"
+          <Button
+          title="Cadastrar"
+          color='#8d1414'
           />
           <Button title="Login"/>
           {auth && (
@@ -50,18 +50,14 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       opacity: 1,
-      backgroundColor: '#f0f0f0',
+      backgroundColor: '#d4cbcb',
       justifyContent: 'center',
       alignItems: 'center',
     },
     textoBase:{
       fontSize:24,
-      color: '#666',
+      color: '#030202',
       fontWeight: 'bold'
-    },
-    botoes:{
-      fontSize: 15,
-      color: 'black'
     },
     photo: {
       width: 100,

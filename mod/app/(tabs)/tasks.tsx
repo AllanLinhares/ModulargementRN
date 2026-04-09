@@ -1,0 +1,19 @@
+import { Text, View } from "react-native";
+
+export default function Tasks(){
+    return (
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: 'white'
+            }}
+        >
+            <Text
+                style={{
+                    textAlign: 'center',
+                    fontSize: 24
+                }}
+            >Tela de tasks</Text>
+        </View>
+    );
+}
