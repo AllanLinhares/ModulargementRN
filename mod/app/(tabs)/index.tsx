@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Image} from "react-native"
+import { StyleSheet, Text, View, Button} from "react-native"
 import { GoogleSignin, User, isSuccessResponse } from '@react-native-google-signin/google-signin'
 import {useState} from "react"
 
