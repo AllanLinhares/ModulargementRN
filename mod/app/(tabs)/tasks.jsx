@@ -1,90 +1,94 @@
-import { Text, View, TextInput, Pressable, StyleSheet, ColorSchemeName } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useContext, useEffect, useState } from "react";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Inter_500Medium, useFonts } from "@expo-google-fonts/inter";
-import Animated, { LinearTransition } from 'react-native-reanimated'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
-import Octicons from '@expo/vector-icons/Octicons'
+import Octicons from "@expo/vector-icons/Octicons";
 
-import { data } from "@/data/todos"
+import { data } from "@/data/todos";
 
-// Definindo o tipo Todo
-type Todo = {
-  id: number;
-  title: string;
-  completed: boolean;
-};
-export const useTheme = () => useContext(ThemeContext)
+export const useTheme = () => useContext(ThemeContext);
 
 export default function Index() {
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [text, setText] = useState<string>('')
-  const { colorScheme, setColorScheme, theme } = useContext(ThemeContext)
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState("");
+  const { colorScheme, setColorScheme, theme } = useContext(ThemeContext);
 
   const [loaded, error] = useFonts({
     Inter_500Medium,
-  })
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jsonValue = await AsyncStorage.getItem("TodoApp")
-        const storageTodos: Todo[] | null = jsonValue != null ? JSON.parse(jsonValue) : null
+        const jsonValue = await AsyncStorage.getItem("TodoApp");
+        const storageTodos = jsonValue != null ? JSON.parse(jsonValue) : null;
 
         if (storageTodos && storageTodos.length) {
-          setTodos(storageTodos.sort((a, b) => b.id - a.id))
+          setTodos(storageTodos.sort((a, b) => b.id - a.id));
         } else {
-          setTodos(data.sort((a, b) => b.id - a.id))
+          setTodos(data.sort((a, b) => b.id - a.id));
         }
       } catch (e) {
-        console.error(e)
+        console.error(e);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const storeData = async () => {
       try {
-        const jsonValue = JSON.stringify(todos)
-        await AsyncStorage.setItem("TodoApp", jsonValue)
+        const jsonValue = JSON.stringify(todos);
+        await AsyncStorage.setItem("TodoApp", jsonValue);
       } catch (e) {
-        console.error(e)
+        console.error(e);
       }
-    }
+    };
 
-    storeData()
-  }, [todos])
+    storeData();
+  }, [todos]);
 
   if (!loaded && !error) {
-    return null
+    return null;
   }
 
-  const styles = createStyles(theme, colorScheme)
+  const styles = createStyles(theme, colorScheme);
 
   const addTodo = () => {
     if (text.trim()) {
       const newId = todos.length > 0 ? todos[0].id + 1 : 1;
-      setTodos([{ id: newId, title: text, completed: false }, ...todos])
-      setText('')
+      setTodos([{ id: newId, title: text, completed: false }, ...todos]);
+      setText("");
     }
-  }
+  };
 
-  const toggleTodo = (id: number) => {
-    setTodos(todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo))
-  }
+  const toggleTodo = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
+  };
 
-  const removeTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id))
-  }
+  const removeTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
 
-  const renderItem = ({ item }: { item: Todo }) => (
+  const renderItem = ({ item }) => (
     <View style={styles.todoItem}>
       <Text
         style={[styles.todoText, item.completed && styles.completedText]}
@@ -96,7 +100,7 @@ export default function Index() {
         <MaterialCommunityIcons name="delete-circle" size={36} color="red" />
       </Pressable>
     </View>
-  )
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -112,18 +116,20 @@ export default function Index() {
           <Text style={styles.addButtonText}>Add</Text>
         </Pressable>
         <Pressable
-          onPress={() => setColorScheme(colorScheme === 'light' ? 'dark' : 'light')}
+          onPress={() =>
+            setColorScheme(colorScheme === "light" ? "dark" : "light")
+          }
           style={{ marginLeft: 10 }}
         >
           <Octicons
-            name={colorScheme === 'dark' ? "moon" : "sun"}
+            name={colorScheme === "dark" ? "moon" : "sun"}
             size={36}
             color={theme.text}
             style={{ width: 36 }}
           />
         </Pressable>
       </View>
-      <Animated.FlatList<Todo>
+      <Animated.FlatList
         data={todos}
         renderItem={renderItem}
         keyExtractor={(todo) => todo.id.toString()} // precisa ser string
@@ -131,36 +137,36 @@ export default function Index() {
         itemLayoutAnimation={LinearTransition}
         keyboardDismissMode="on-drag"
       />
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+      <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
     </SafeAreaView>
   );
 }
 
-function createStyles(theme: any, colorScheme: ColorSchemeName) {
+function createStyles(theme, colorScheme) {
   return StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: theme.background,
     },
     inputContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       marginBottom: 10,
       padding: 10,
-      width: '100%',
+      width: "100%",
       maxWidth: 1024,
-      marginHorizontal: 'auto',
-      pointerEvents: 'auto',
+      marginHorizontal: "auto",
+      pointerEvents: "auto",
     },
     input: {
       flex: 1,
-      borderColor: 'gray',
+      borderColor: "gray",
       borderWidth: 1,
       borderRadius: 5,
       padding: 10,
       marginRight: 10,
       fontSize: 18,
-      fontFamily: 'Inter_500Medium',
+      fontFamily: "Inter_500Medium",
       minWidth: 0,
       color: theme.text,
     },
@@ -171,31 +177,30 @@ function createStyles(theme: any, colorScheme: ColorSchemeName) {
     },
     addButtonText: {
       fontSize: 18,
-      color: colorScheme === 'dark' ? 'black' : 'white',
+      color: colorScheme === "dark" ? "black" : "white",
     },
     todoItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
       gap: 4,
       padding: 10,
-      borderBottomColor: 'gray',
+      borderBottomColor: "gray",
       borderBottomWidth: 1,
-      width: '100%',
+      width: "100%",
       maxWidth: 1024,
-      marginHorizontal: 'auto',
-      pointerEvents: 'auto',
+      marginHorizontal: "auto",
+      pointerEvents: "auto",
     },
     todoText: {
       flex: 1,
       fontSize: 18,
-      fontFamily: 'Inter_500Medium',
+      fontFamily: "Inter_500Medium",
       color: theme.text,
     },
     completedText: {
-      textDecorationLine: 'line-through',
-      color: 'gray',
-    }
-  })
-
+      textDecorationLine: "line-through",
+      color: "gray",
+    },
+  });
 }
