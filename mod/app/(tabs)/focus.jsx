@@ -13,7 +13,7 @@ export default function Tasks(){
                     textAlign: 'center',
                     fontSize: 24
                 }}
-            >Tela de tasks</Text>
+            >Tela de concentracao</Text>
         </View>
     );
 }
