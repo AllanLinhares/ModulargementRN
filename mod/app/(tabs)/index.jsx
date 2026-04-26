@@ -3,7 +3,14 @@ import {
   isSuccessResponse,
 } from "@react-native-google-signin/google-signin";
 import { useState } from "react";
-import { Button, StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 GoogleSignin.configure({
   iosClientId:
@@ -11,8 +18,8 @@ GoogleSignin.configure({
 });
 
 export default function HomeScreen() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
   const [auth, setAuth] = useState(null);
 
   async function handleGoogleSignIn() {
@@ -31,7 +38,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.backgroundColor}>
       <Text style={styles.title}>Entrar ao Modulargement</Text>
-        <Text style={styles.subtitle}>
+      <Text style={styles.subtitle}>
         Organize estudos, tarefas e receba dicas da IA
       </Text>
 
@@ -61,7 +68,11 @@ export default function HomeScreen() {
       </TouchableOpacity>
 
       <Text style={styles.or}>ou</Text>
-      <Button style={styles.googleButton} title="Entrar com google" onPress={handleGoogleSignIn} />
+      <Button
+        style={styles.googleButton}
+        title="Entrar com google"
+        onPress={handleGoogleSignIn}
+      />
 
       {auth && (
         <View style={styles.container}>
@@ -79,62 +90,62 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   backgroundColor: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 24,
-    justifyContent: 'center',
+    justifyContent: "center",
     alignItems: "center",
   },
-   title: {
+  title: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#008080',
+    fontWeight: "bold",
+    color: "#008080",
     marginBottom: 8,
-    textAlign: 'center',
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 14,
-    color: '#555',
+    color: "#555",
     marginBottom: 24,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
   },
   optionsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 16,
   },
   link: {
-    color: '#008080',
+    color: "#008080",
     fontSize: 14,
     margin: 10,
   },
   button: {
-    backgroundColor: '#008080',
+    backgroundColor: "#008080",
     padding: 14,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 12,
   },
   googleButton: {
-    backgroundColor: '#DB4437',
+    backgroundColor: "#DB4437",
     padding: 14,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 16,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
   or: {
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 8,
-    color: '#555',
+    color: "#555",
   },
 });

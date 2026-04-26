@@ -5,7 +5,7 @@ import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -30,11 +30,12 @@ export default function TabLayout() {
       <Tabs.Screen
         name="tasks"
         options={{
-          title: 'Tarefas',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="check-square" color={color} />,
+          title: "Tarefas",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="check-square" color={color} />
+          ),
         }}
       />
-      
     </Tabs>
   );
 }
