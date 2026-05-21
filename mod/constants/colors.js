@@ -1,15 +1,5 @@
-// Definição da interface para o tema
-export interface Theme {
-  text: string
-  background: string
-  icon: string
-  button: string
-  primary: string,
-  secondary: string
-}
-
-// Definição da estrutura Colors com tipagem
-export const Colors: { light: Theme; dark: Theme } = {
+// Definição da estrutura Colors
+export const Colors = {
   light: {
     text: '#000',
     background: '#fff',

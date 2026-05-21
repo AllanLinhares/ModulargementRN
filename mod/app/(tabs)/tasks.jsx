@@ -1,4 +1,4 @@
-import { ThemeContext } from "@/context/ThemeContext";
+import { ThemeContext } from "@/context/ThemeContext.jsx";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useEffect, useState } from "react";
 import {
