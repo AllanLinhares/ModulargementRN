@@ -2,15 +2,22 @@ import {
   GoogleSignin,
   isSuccessResponse,
 } from "@react-native-google-signin/google-signin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+
+import {
+  ModuloDashboard,
+  modulosDisponiveis,
+} from "../modules/moduloState";
+import { ModuleSelector } from "../modules/ModuleSelector";
 
 GoogleSignin.configure({
   iosClientId:
@@ -21,6 +28,14 @@ export default function HomeScreen() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [auth, setAuth] = useState(null);
+  const [estadoAtual, setEstadoAtual] = useState(new ModuloDashboard());
+  const [selectedModuleId, setSelectedModuleId] = useState("dashboard");
+
+  useEffect(() => {
+    if (auth) {
+      estadoAtual.carregarDados();
+    }
+  }, [auth, estadoAtual]);
 
   async function handleGoogleSignIn() {
     try {
@@ -35,8 +50,13 @@ export default function HomeScreen() {
     }
   }
 
+  function handleSelectModule(option) {
+    setEstadoAtual(option.state);
+    setSelectedModuleId(option.id);
+  }
+
   return (
-    <View style={styles.backgroundColor}>
+    <ScrollView contentContainerStyle={styles.backgroundColor}>
       <Text style={styles.title}>Entrar ao Modulargement</Text>
       <Text style={styles.subtitle}>
         Organize estudos, tarefas e receba dicas da IA
@@ -68,31 +88,35 @@ export default function HomeScreen() {
       </TouchableOpacity>
 
       <Text style={styles.or}>ou</Text>
-      <Button
-        style={styles.googleButton}
-        title="Entrar com google"
-        onPress={handleGoogleSignIn}
-      />
+      <Button title="Entrar com Google" onPress={handleGoogleSignIn} />
 
       {auth && (
-        <View style={styles.container}>
-          <Text>{auth.user.name}</Text>
-          <Text>{auth.user.email}</Text>
+        <View style={styles.moduleContainer}>
+          <Text style={styles.sectionTitle}>Bem-vindo, {auth.user.name}</Text>
+          <Text style={styles.sectionSubtitle}>
+            Escolha um módulo para personalizar sua tela.
+          </Text>
+          <ModuleSelector
+            options={modulosDisponiveis}
+            selectedId={selectedModuleId}
+            onSelect={handleSelectModule}
+          />
+          <View style={styles.screenWrapper}>{estadoAtual.renderizar()}</View>
         </View>
       )}
+
       <TouchableOpacity>
         <Text style={styles.link}>Não tem conta? Criar conta</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   backgroundColor: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: "#fff",
     padding: 24,
-    justifyContent: "center",
     alignItems: "center",
   },
   title: {
@@ -109,6 +133,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
+    width: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
@@ -119,6 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 16,
+    width: "100%",
   },
   link: {
     color: "#008080",
@@ -126,18 +152,12 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   button: {
+    width: "100%",
     backgroundColor: "#008080",
     padding: 14,
     borderRadius: 8,
     alignItems: "center",
     marginBottom: 12,
-  },
-  googleButton: {
-    backgroundColor: "#DB4437",
-    padding: 14,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 16,
   },
   buttonText: {
     color: "#fff",
@@ -147,5 +167,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 8,
     color: "#555",
+  },
+  moduleContainer: {
+    width: "100%",
+    marginTop: 24,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 8,
+    color: "#004d66",
+  },
+  sectionSubtitle: {
+    marginBottom: 12,
+    color: "#555",
+  },
+  screenWrapper: {
+    marginTop: 16,
   },
 });
